@@ -1,0 +1,42 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+phi = (1 + 5**0.5) / 2  
+freq_432 = 432
+sample_rate = 44100
+duration = 0.02  
+
+
+A = 432Hz
+golden_frequency = freq_432 / phi 
+
+print(f"Golden Ratio (Phi): {phi:.4f}")
+print(f"Primary Frequency: {freq_432} Hz")
+print(f"Golden Ratio frequency relation: {golden_frequency:.2f} Hz")
+
+
+t = np.linspace(0, duration, int(sample_rate * duration))
+wave_432 = np.sin(2 * np.pi * freq_432 * t)
+
+fig, ax = plt.subplots(1, 2, figsize=(15, 5))
+
+
+ax[0].plot(t, wave_432, color='gold', linewidth=2)
+ax[0].set_title("The 432 Hz Sine Wave")
+ax[0].set_xlabel("Time (s)")
+ax[0].grid(True, alpha=0.3)
+
+
+theta = np.linspace(0, 4*np.pi, 1000)
+r = phi**(2*theta/np.pi)
+x = r * np.cos(theta)
+y = r * np.sin(theta)
+
+ax[1].plot(x, y, color='darkorange', linewidth=2)
+ax[1].set_title("The Golden Spiral (Visualizing Phi)")
+ax[1].axis('equal')
+ax[1].axis('off')
+
+plt.tight_layout()
+plt.show()
