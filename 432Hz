@@ -1,41 +1,55 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 
 phi = (1 + 5**0.5) / 2  
 freq_432 = 432
+duration = 0.03
 sample_rate = 44100
-duration = 0.03 
-
-a = 432
-golden_frequency = freq_432 / phi 
-
-print(f"Golden Ratio (Phi): {phi:.4f}")
-print(f"Primary Frequency: {freq_432} Hz")
-print(f"Golden Ratio frequency relation: {golden_frequency:.2f} Hz")
 
 
-t = np.linspace(0, duration, int(sample_rate * duration))
-wave_432 = np.sin(2 * np.pi * freq_432 * t)
-
-fig, ax = plt.subplots(1, 2, figsize=(15, 5))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6), facecolor='black')
+plt.subplots_adjust(wspace=0.3)
 
 
-ax[0].plot(t, wave_432, color='gold', linewidth=2)
-ax[0].set_title("The 432 Hz Sine Wave")
-ax[0].set_xlabel("Time (s)")
-ax[0].grid(True, alpha=0.3)
+t = np.linspace(0, duration, 1000)
+line_wave, = ax1.plot([], [], color='gold', lw=2)
+ax1.set_xlim(0, duration)
+ax1.set_ylim(-1.5, 1.5)
+ax1.set_title("432 Hz Sine Wave Oscillation", color='white')
+ax1.axis('off')
 
 
-theta = np.linspace(0, 4*np.pi, 1000)
-r = phi**(2*theta/np.pi)
-x = r * np.cos(theta)
-y = r * np.sin(theta)
+theta = np.linspace(0, 8 * np.pi, 1000)
+line_spiral, = ax2.plot([], [], color='darkorange', lw=2)
+ax2.set_xlim(-50, 50)
+ax2.set_ylim(-50, 50)
+ax2.set_title("Vibrating Golden Spiral", color='white')
+ax2.axis('equal')
+ax2.axis('off')
 
-ax[1].plot(x, y, color='darkorange', linewidth=2)
-ax[1].set_title("The Golden Spiral (Visualizing Phi)")
-ax[1].axis('equal')
-ax[1].axis('off')
 
-plt.tight_layout()
+def update(i):
+    
+    phase = i / 10.0
+    
+  
+    y_wave = np.sin(2 * np.pi * freq_432 * t + phase)
+    line_wave.set_data(t, y_wave)
+    
+ 
+    r_base = phi**(2 * theta / np.pi)
+    # The 'pulse' is created by multiplying the radius by a small sine modulation
+    r_vibrant = r_base * (1 + 0.05 * np.sin(phase)) 
+    
+    x = r_vibrant * np.cos(theta)
+    y = r_vibrant * np.sin(theta)
+    line_spiral.set_data(x, y)
+    
+    return line_wave, line_spiral
+
+
+ani = FuncAnimation(fig, update, frames=200, interval=20, blit=True)
+
 plt.show()
