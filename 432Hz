@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 phi = (1 + 5**0.5) / 2  
 freq_432 = 432
 sample_rate = 44100
-duration = 0.02  
-
+duration = 0.03 
 
 a = 432
 golden_frequency = freq_432 / phi 
