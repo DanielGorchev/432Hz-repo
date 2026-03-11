@@ -5,51 +5,58 @@ from matplotlib.animation import FuncAnimation
 
 phi = (1 + 5**0.5) / 2  
 freq_432 = 432
-duration = 0.03
+freq_440 = 440
+duration = 0.02 
 sample_rate = 44100
 
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6), facecolor='black')
-plt.subplots_adjust(wspace=0.3)
+ratio_432 = (freq_432 / 256) # 432 relative to C=256 (Scientific Pitch)
+ratio_440 = (freq_440 / 256)
 
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 7), facecolor='black')
+plt.subplots_adjust(bottom=0.2)
 
 t = np.linspace(0, duration, 1000)
-line_wave, = ax1.plot([], [], color='gold', lw=2)
+line_432, = ax1.plot([], [], color='gold', lw=2, label='432 Hz (Natural)')
+line_440, = ax1.plot([], [], color='cyan', lw=1.5, alpha=0.7, label='440 Hz (Standard)')
 ax1.set_xlim(0, duration)
-ax1.set_ylim(-1.5, 1.5)
-ax1.set_title("432 Hz Sine Wave Oscillation", color='white')
+ax1.set_ylim(-2, 2)
+ax1.set_title("Waveform Comparison: 432Hz vs 440Hz", color='white', pad=20)
+ax1.legend(loc='upper right', frameon=False, labelcolor='white')
 ax1.axis('off')
 
 
-theta = np.linspace(0, 8 * np.pi, 1000)
+theta = np.linspace(0, 4 * np.pi, 1000)
 line_spiral, = ax2.plot([], [], color='darkorange', lw=2)
-ax2.set_xlim(-50, 50)
-ax2.set_ylim(-50, 50)
-ax2.set_title("Vibrating Golden Spiral", color='white')
+ax2.set_xlim(-20, 20)
+ax2.set_ylim(-20, 20)
+ax2.set_title("Phi-Based Resonance", color='white', pad=20)
 ax2.axis('equal')
 ax2.axis('off')
 
 
+txt = fig.text(0.5, 0.05, "", color='white', ha='center', fontsize=12, family='monospace')
+
 def update(i):
-    
-    phase = i / 10.0
+    phase = i / 5.0
     
   
-    y_wave = np.sin(2 * np.pi * freq_432 * t + phase)
-    line_wave.set_data(t, y_wave)
+    y_432 = np.sin(2 * np.pi * freq_432 * t + phase)
+    y_440 = np.sin(2 * np.pi * freq_440 * t + phase)
+    line_432.set_data(t, y_432)
+    line_440.set_data(t, y_440)
     
- 
-    r_base = phi**(2 * theta / np.pi)
-    # The 'pulse' is created by multiplying the radius by a small sine modulation
-    r_vibrant = r_base * (1 + 0.05 * np.sin(phase)) 
     
-    x = r_vibrant * np.cos(theta)
-    y = r_vibrant * np.sin(theta)
-    line_spiral.set_data(x, y)
+    pulse = 1 + 0.08 * np.sin(phase)
+    r = (phi**(theta/np.pi)) * pulse
+    line_spiral.set_data(r * np.cos(theta), r * np.sin(theta))
     
-    return line_wave, line_spiral
+  
+    diff_432 = abs((freq_432 / 27) - phi) 
+    txt.set_text(f"432Hz: Stable harmonic | 440Hz: {freq_440-freq_432}Hz Higher Offset\n"
+                 f"Mathematical Phi ($\phi$): {phi:.4f}")
+    
+    return line_432, line_440, line_spiral, txt
 
-
-ani = FuncAnimation(fig, update, frames=200, interval=20, blit=True)
-
+ani = FuncAnimation(fig, update, frames=200, interval=30, blit=True)
 plt.show()
