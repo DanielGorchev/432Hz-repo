@@ -60,3 +60,46 @@ def update(i):
 
 ani = FuncAnimation(fig, update, frames=200, interval=30, blit=True)
 plt.show()
+
+
+
+
+
+
+phi = (1 + 5**0.5) / 2  
+f432, f440 = 432, 440
+f_phi = phi**12.618
+
+t = np.linspace(0, 0.05, 1000)
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6), facecolor='black')
+plt.subplots_adjust(bottom=0.15)
+
+
+curve432, = ax1.plot([], [], color='gold', lw=2)
+ax1.set_title("432 Hz: Harmonic Resonance ($\phi$)", color='white')
+ax1.set_xlim(-1.2, 1.2); ax1.set_ylim(-1.2, 1.2); ax1.axis('off')
+
+
+curve440, = ax2.plot([], [], color='cyan', lw=1.5)
+ax2.set_title("440 Hz: Standard Interference", color='white')
+ax2.set_xlim(-1.2, 1.2); ax2.set_ylim(-1.2, 1.2); ax2.axis('off')
+
+def update(i):
+    phase = i / 15.0
+    
+
+    x_phi = np.sin(2 * np.pi * f_phi * t)
+    
+    y432 = np.sin(2 * np.pi * f432 * t + phase)
+    y440 = np.sin(2 * np.pi * f440 * t + phase)
+    
+    curve432.set_data(x_phi, y432)
+    curve440.set_data(x_phi, y440)
+    
+    return curve432, curve440
+
+ani = FuncAnimation(fig, update, frames=200, interval=30, blit=True)
+plt.show()
+
+print(f"432Hz Deviation: {abs(f432-f_phi):.2f} Hz | 440Hz Deviation: {abs(f440-f_phi):.2f} Hz")
