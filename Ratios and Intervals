@@ -1,0 +1,25 @@
+import math
+from fractions import Fraction
+
+def calculate_432_ratios(base_freq=432.0):
+    ratios = {
+        "Unison": (1, 1),
+        "Major Third": (5, 4),
+        "Perfect Fourth": (4, 3),
+        "Perfect Fifth": (3, 2),
+        "Octave": (2, 1)
+    }
+
+    print("Interval        | Ratio  | Frequency (Hz) | Cents")
+    print("-" * 50)
+
+    for name, (n, m) in ratios.items():
+        ratio = Fraction(n, m)
+        decimal_val = float(ratio)
+        freq = base_freq * decimal_val
+        cents = 1200 * math.log2(decimal_val)
+        
+        print(f"{name:<15} | {str(ratio):<6} | {freq:<14.2f} | {cents:.2f}")
+
+
+calculate_432_ratios(432.0)
