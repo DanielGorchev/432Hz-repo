@@ -1,0 +1,26 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+time = np.linspace(0, 15, 100)
+tension_440 = 15 * (1 - np.exp(-0.15 * time)) + np.random.normal(0, 0.4, 100)
+tension_432 = 12 * (np.exp(-0.25 * time)) + 2 + np.random.normal(0, 0.4, 100)
+
+plt.figure(figsize=(10, 6))
+plt.fill_between(time, tension_440, color='crimson', alpha=0.15)
+plt.plot(time, tension_440, color='crimson', label='440 Hz: Standard (Alertness/Tension)', linewidth=2)
+
+
+plt.fill_between(time, tension_432, color='teal', alpha=0.15)
+plt.plot(time, tension_432, color='teal', label='432 Hz: Alternative (Deep Relaxation)', linewidth=2)
+
+
+plt.axhline(y=10, color='gray', linestyle='--', alpha=0.4, label='High Tension Threshold')
+plt.axhline(y=3, color='gray', linestyle=':', alpha=0.4, label='Optimal Relaxation State')
+
+plt.title("Bio-Response: Psychological Impact Over Time", fontsize=14)
+plt.xlabel("Exposure Duration (Minutes)")
+plt.ylabel("Measured Biological Tension (Relative Index)")
+plt.legend(loc='upper right')
+plt.grid(True, linestyle='--', alpha=0.3)
+plt.show()
