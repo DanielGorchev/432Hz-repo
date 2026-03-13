@@ -1,0 +1,22 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+frequency = 432 
+duration = 0.01  
+sampling_rate = 44100  
+t = np.linspace(0, duration, int(sampling_rate * duration))
+y = np.sin(2 * np.pi * frequency * t)
+
+
+plt.figure(figsize=(10, 4))
+plt.plot(t * 1000, y, color='dodgerblue', linewidth=2)  # t * 1000 converts seconds to ms
+
+
+plt.title(f"Harmonic Sine Wave at {frequency}Hz", fontsize=14)
+plt.xlabel("Time (milliseconds)", fontsize=12)
+plt.ylabel("Amplitude", fontsize=12)
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.axhline(0, color='black', linewidth=1)  
+
+plt.show()
