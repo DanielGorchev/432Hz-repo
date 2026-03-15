@@ -1,0 +1,38 @@
+import math
+from fractions import Fraction
+
+def get_musical_data(base_freq=432.0):
+    just_ratios = {
+        "Unison": (1, 1),
+        "Minor Second": (16, 15),
+        "Major Second": (9, 8),
+        "Minor Third": (6, 5),
+        "Major Third": (5, 4),
+        "Perfect Fourth": (4, 3),
+        "Tritone": (45, 32),
+        "Perfect Fifth": (3, 2),
+        "Minor Sixth": (8, 5),
+        "Major Sixth": (5, 3),
+        "Minor Seventh": (9, 5),
+        "Major Seventh": (15, 8),
+        "Octave": (2, 1)
+    }
+
+    print(f"--- Tuning Analysis (Base: {base_freq}Hz) ---")
+    header = f"{'Interval':<15} | {'Ratio':<7} | {'Just (Hz)':<10} | {'Equal (Hz)':<10} | {'Diff (Hz)'}"
+    print(header)
+    print("-" * len(header))
+
+    for i, (name, (n, m)) in enumerate(just_ratios.items()):
+        ratio = Fraction(n, m)
+        just_freq = base_freq * float(ratio)
+        
+       
+        equal_freq = base_freq * (2 ** (i / 12))
+        diff = just_freq - equal_freq 
+        print(f"{name:<15} | {str(ratio):<7} | {just_freq:<10.2f} | {equal_freq:<10.2f} | {diff:+.2f}")
+
+
+get_musical_data(432.0)
+print("\n")
+get_musical_data(440.0)
