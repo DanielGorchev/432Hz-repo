@@ -1,0 +1,21 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+time = np.linspace(0, 15, 100)
+
+tension_440 = 15 * (1 - np.exp(-0.15 * time)) + np.random.normal(0, 0.4, 100)
+tension_432 = 12 * (np.exp(-0.25 * time)) + 2 + np.random.normal(0, 0.4, 100)
+tension_528 = 8 * (np.exp(-0.1 * time)) + 4 + np.random.normal(0, 0.4, 100)
+tension_415 = 10 * (np.exp(-0.3 * time)) + 1.5 + np.random.normal(0, 0.4, 100)
+
+plt.figure(figsize=(10, 6))
+plt.plot(time, tension_440, color='red', label='440 Hz: Standard (High Tension)')
+plt.plot(time, tension_432, color='green', label='432 Hz: Harmonic (Deep Relaxation)')
+plt.plot(time, tension_528, color='yellow', label='528 Hz: Solfeggio (Moderate Focus)')
+plt.plot(time, tension_415, color='black', label='415 Hz: Baroque (Low Arousal)')
+
+plt.title("Bio-Response: Multi-Frequency Impact Over Time")
+plt.xlabel(" Duration (Minutes)")
+plt.ylabel("Measured Biological Tension (Relative Index)")
+plt.legend()
+plt.show()
