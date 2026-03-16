@@ -1,0 +1,26 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+f_base = 432
+ratio = 34 / 21
+f_sync = f_base * ratio
+
+
+duration = 21 / f_base
+t = np.linspace(0, duration, 3000)
+
+wave1 = np.sin(2 * np.pi * f_base * t)
+wave2 = np.sin(2 * np.pi * f_sync * t)
+combined = wave1 + wave2
+
+
+plt.figure(figsize=(10, 4))
+plt.plot(t, combined, color='darkviolet', label=f'Synced Pattern ({ratio:.4f} Ratio)')
+plt.title(f"432Hz Synced with 34/21 Fibonacci Ratio")
+plt.xlabel("Time (s)")
+plt.ylabel("Amplitude")
+plt.axvline(x=0, color='black', linestyle='--')
+plt.axvline(x=duration, color='black', linestyle='--', label='Sync Point')
+plt.legend()
+plt.grid(alpha=0.3)
+plt.show()
