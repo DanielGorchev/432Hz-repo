@@ -1,0 +1,59 @@
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import numpy as np
+
+def draw_blueprint_spiral(iterations=9):
+    fig, ax = plt.subplots(figsize=(10, 8), facecolor='blue')
+    ax.set_facecolor('blue')
+    
+
+    fib = [0, 1]
+    for i in range(iterations):
+        fib.append(fib[-1] + fib[-2])
+    fib = fib[1:]
+    x, y = 0, 0
+    
+    for i in range(len(fib)):
+        side = fib[i]
+        if i % 4 == 0:  
+            rect_x, rect_y = x, y
+            arc_center = (x, y + side)
+            theta = np.linspace(1.5 * np.pi, 2 * np.pi, 100)
+            x, y = x + side, y + side
+        elif i % 4 == 1:   
+            rect_x, rect_y = x - side, y
+            arc_center = (x - side, y)
+            theta = np.linspace(0, 0.5 * np.pi, 100)
+            x, y = x - side, y + side
+        elif i % 4 == 2:   #
+            rect_x, rect_y = x - side, y - side
+            arc_center = (x, y - side)
+            theta = np.linspace(0.5 * np.pi, np.pi, 100)
+            x, y = x - side, y - side
+        else:           
+            rect_x, rect_y = x, y - side
+            arc_center = (x + side, y)
+            theta = np.linspace(np.pi, 1.5 * np.pi, 100)
+            x, y = x + side, y - side
+
+     
+        rect = patches.Rectangle((rect_x, rect_y), side, side, linewidth=1, 
+                                 edgecolor='white', facecolor='none', alpha=0.6)
+        ax.add_patch(rect)
+        
+       
+        arc_x = arc_center[0] + side * np.cos(theta)
+        arc_y = arc_center[1] + side * np.sin(theta)
+        ax.plot(arc_x, arc_y, color='white', linewidth=2.5, antialiased=True)
+
+ 
+    ax.set_aspect('equal')
+    ax.grid(True, color='white', linestyle='--', linewidth=0.5, alpha=0.3)
+    
+ 
+    plt.axis('off')
+    plt.tight_layout()
+    plt.show()
+
+if __name__ == "__main__":
+    draw_blueprint_spiral()
